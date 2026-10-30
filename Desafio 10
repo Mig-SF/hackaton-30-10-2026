@@ -1,0 +1,53 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+long long inversoes = 0;
+void merge(vector<int>& lista, int inicio, int meio, int fim);
+void mergesort(vector<int>& lista, int inicio, int meio, int fim){
+    int i = inicio;
+    vector<int> auxiliar;
+    int j = meio+1;
+    while(i <= meio && j<= fim){
+        if(lista[i] <= lista[j]){
+            auxiliar.push_back(lista[i]);
+            i++;
+        }else{auxiliar.push_back(lista[j]);
+            inversoes+=(meio-i+1);
+            j++;
+        }
+    }
+    while( i<= meio){
+        auxiliar.push_back(lista[i]);
+        i++;
+    }
+    while(j<= fim){
+        auxiliar.push_back(lista[j]);
+        j++;
+    }
+    for(int k=0; k < auxiliar.size(); k++){
+        lista[inicio+k] = auxiliar[k];
+    }
+}
+void mergesort(vector<int>& lista, int inicio, int fim){
+    if(inicio < fim) {
+        int meio = (inicio+fim)/2;
+        mergesort(lista, inicio, meio);
+        mergesort(lista, meio+1, fim);
+        merge(lista, inicio, meio, fim);
+    }
+}
+int main(){
+    int n;
+    cin >> n;
+    vector<int>lista(n);
+    for(int i =0; i< n; i++){
+        cin >> lista[i];
+    }
+    mergesort(lista, 0, n-1);
+    for (int i=0; i<0; i++){
+        cout << lista[i]<< " ";
+    }
+    cout << endl;
+    cout << inversoes << endl;
+    return 0;
+}
